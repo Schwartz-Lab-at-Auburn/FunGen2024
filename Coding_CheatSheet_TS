@@ -1,0 +1,122 @@
+
+##################################################################
+########## Basic Code useful for Functional Genomic Course  #####
+#################################################################
+########################  Login to Alabama Super computer
+ssh my_name@dmc.asc.edu
+
+#Example Tonia's Account
+ssh aubtss@dmc.asc.edu
+
+
+######### PULL data
+###From ASC to Local computer
+rsync --partial -arv <ASC Login ID:path to remote file>  <path to local 
+target folder>
+## example
+rsync --partial -arv 
+aubtss@dmc.asc.edu://home/aubtss/class_shared/Tonia/fastqc/*   
+/Users/tonia_schwartz/Desktop/ClassData
+
+
+########### PUSH file from Local computer to remote computer using the 
+rsync program ###########
+# Open terminal on local computer (or log into spirit - now your local 
+computer - and trasfer to a remove computer
+# determine the path to the file you want to transfer
+rsync --partial -arv <local path and file> <ID:remote path to target 
+folder>
+## examples to push from my computer to ASC or Hopper
+rsync --partial -arv /Users/TonkaSue/Desktop/scripts/*  
+aubtss@dmc.asc.edu:/home/aubtss/class_shared/Tonia
+
+
+################# Check accuracy of data transfers #######################
+#On ASC or Hopper
+md5sum <filename>
+# To check all the files in a folder - this usually works from unix
+md5sum ./*
+# from mac
+md5 <filename>
+# from mac all files
+find . -type f -exec md5  {} \; > md5_SeqCapMyLaptop.txt
+
+##################### Unzip a file
+gunzip FILENAME.gz
+### To zip a file
+gzip -c FILENAME.txt > FILENAME.txt.gz
+
+###################  Tarball a directory
+tar cvzf OUTFILE.tar.gz DIRECTORY_TO_TARBALL/
+#################### UnTarball a directory
+tar xvzf OUTFILE.tar.gz
+
+###########  download data from a website
+#wget <website>
+wget http://www.cyberciti.biz/here/lsst.tar.gz
+#from SRA use the SRA tool kit - see NCBI
+# this downloads the SRA file and converts to fastq
+# -F  Defline contains only original sequence name.
+# -I  Append read id after spot id as 'accession.spot.readid' on defline.
+# splits the files into R1 and R2,
+fastq-dump -F --split-files <accession>
+
+
+############## looking at what programs are on the ASC
+### move to the directory with all the programs
+cd /opt/asn/apps
+### list the programs
+ls -l
+
+################ Editing files using VIM
+vim <scriptname>
+press i to start editing
+when done editing hit Esc and then    :wq or :w and new filename
+
+#Make the script executable, like this
+chmod +x myscript
+
+#Submit the script to the queue on the Alabama Super Computer
+run_script myscript
+Choose a batch job queue:
+Queue                     Wall Time      Mem  # Cores
+------------------------ ---------- -------- --------
+express                     4:00:00     16gb      1-4
+small                      60:00:00      4gb      1-8
+medium                    150:00:00     16gb     1-16
+large                     360:00:00    120gb     1-64
+knl                        60:00:00     94gb    1-256
+benchmark                  24:00:00    120gb     1-64
+gpu                       360:00:00     20gb      1-2
+class                       2:00:00     64gb     1-60
+class_uv                    2:00:00     64gb     1-24
+class_gpu                   2:00:00     20gb     1-2
+Enter Queue Name (default <cr>: small) class
+Enter number of processor cores (default <cr>: 1 ) 1
+Enter Time Limit (default <cr>: 2:00:00 HH:MM:SS) 00:30:00
+Enter memory limit (default <cr>: 1gb ) 8gb
+Enter a name for your job (default: qQualityShortshSCR)
+TSS_quality
+Run on; uv, dmc, ivy-bridge, broadwell, etc (default: any)
+dmc
+============================================================
+=====         Summary of your script     job           =====
+============================================================
+The script file is: q.QualityShort.sh
+The time limit is 00:20:00 HH:MM:SS.
+The memory limit is: 1gb
+The job will start running after: 2017-01-26T11:38:39
+Job Name: TSS_quality
+Virtual queue: class
+QOS: -p dmc,uv,knl --qos=class
+Constraints: --constraint=uv|dmc
+Queue submit command:
+sbatch -p dmc,uv,knl --qos=class -J TSS_quality --begin=2017-01-
+26T11:38:39 --requeue --mail-user=tss0019@auburn.edu -o TSS_quality.o%A -t 
+00:20:00 -N 1-1 -n 1 --mem-per-cpu=1000mb --constraint=uv|dmc
+
+#Check if the script is running
+squeue
+
+# Cancel job
+scancel <job ID>
