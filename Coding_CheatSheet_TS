@@ -6,17 +6,15 @@
 ssh my_name@dmc.asc.edu
 
 #Example Tonia's Account
-ssh aubtss@dmc.asc.edu
+ssh aubtss@dmc.ascx.edu
 
 
-######### PULL data
+######### PULL data using rsync
 ###From ASC to Local computer
-rsync --partial -arv <ASC Login ID:path to remote file>  <path to local 
-target folder>
+rsync --partial -arv <ASC Login ID:path to remote file>  <path to local target folder>
+
 ## example
-rsync --partial -arv 
-aubtss@dmc.asc.edu://home/aubtss/class_shared/Tonia/fastqc/*   
-/Users/tonia_schwartz/Desktop/ClassData
+rsync --partial -arv aubtss@asax.asc.edu://home/aubtss/class_shared/Tonia/fastqc/*  /Users/tonia_schwartz/Desktop/ClassData
 
 
 ########### PUSH file from Local computer to remote computer using the 
@@ -24,21 +22,23 @@ rsync program ###########
 # Open terminal on local computer (or log into spirit - now your local 
 computer - and trasfer to a remove computer
 # determine the path to the file you want to transfer
-rsync --partial -arv <local path and file> <ID:remote path to target 
-folder>
+rsync --partial -arv <local path and file> <ID:remote path to target folder>
+
 ## examples to push from my computer to ASC or Hopper
-rsync --partial -arv /Users/TonkaSue/Desktop/scripts/*  
-aubtss@dmc.asc.edu:/home/aubtss/class_shared/Tonia
+rsync --partial -arv /Users/Tonia/Desktop/scripts/*  aubtss@asax.asc.edu:/home/aubtss/class_shared/Tonia
 
 
 ################# Check accuracy of data transfers #######################
-#On ASC or Hopper
+#On ASC 
 md5sum <filename>
+
 # To check all the files in a folder - this usually works from unix
 md5sum ./*
-# from mac
+
+# On mac
 md5 <filename>
-# from mac all files
+
+# On mac all files
 find . -type f -exec md5  {} \; > md5_SeqCapMyLaptop.txt
 
 ##################### Unzip a file
@@ -61,7 +61,6 @@ wget http://www.cyberciti.biz/here/lsst.tar.gz
 # splits the files into R1 and R2,
 fastq-dump -F --split-files <accession>
 
-
 ############## looking at what programs are on the ASC
 ### move to the directory with all the programs
 cd /opt/asn/apps
@@ -74,10 +73,11 @@ press i to start editing
 when done editing hit Esc and then    :wq or :w and new filename
 
 #Make the script executable, like this
-chmod +x myscript
+chmod +x <myscript>
 
 #Submit the script to the queue on the Alabama Super Computer
-run_script myscript
+run_script <myscript>
+
 Choose a batch job queue:
 Queue                     Wall Time      Mem  # Cores
 ------------------------ ---------- -------- --------
@@ -99,6 +99,7 @@ Enter a name for your job (default: qQualityShortshSCR)
 TSS_quality
 Run on; uv, dmc, ivy-bridge, broadwell, etc (default: any)
 dmc
+
 ============================================================
 =====         Summary of your script     job           =====
 ============================================================
