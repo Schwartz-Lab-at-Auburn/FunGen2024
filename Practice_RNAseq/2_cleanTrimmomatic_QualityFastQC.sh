@@ -38,22 +38,22 @@ module load fastqc/0.10.1
 ##       make variables for your ASC ID so the directories are automatically made in YOUR directory
 MyID=[1]                        ## Example: MyID=aubtss
 
-# Variables: raw data directory (DD), working directory(WD), cleaned status (CS), name of file containing the adpaters.
+# Variables: raw data directory (DD), working directory(WD), Quality after cleaning (PCQ), name of file containing the adpaters.
 WD=[2]                          ## Example: WD=/scratch/$MyID/PracticeRNAseq
 DD=[3]                          ## Example: DD=/scratch/$MyID/PracticeRNAseq/RawData
 CD=[4]                          ## Example: CD=/scratch/$MyID/PracticeRNAseq/CleanData
-CS=PostCleanQuality
+PCQ=PostCleanQuality
 adapters=AdaptersToTrim_All.fa  ## This is a fasta file that has a list of adapters commonly used in NGS sequencing. 
-					## You will likely need to edit this for other projects based on how your libraries 
-					## were made to search for the correct adapters for your project
+				## In the future, for your data, you will likely need to edit this for other projects based on how your libraries 
+				## were made to search for the correct adapters for your project
 				
 ## make the directories to hold the Cleaned Data files, and the directory to hold the results for assessing quality of the cleaned data.
-mkdir $CD
-mkdir $WD/$CS
+mkdir ${CD}
+mkdir ${WD}/${PCQ}
 
 ################ Trimmomatic ###################################
 ## Move to Raw Data Directory
-cd $DD
+cd ${DD}
 
 ### Make list of file names to Trim
         ## this line is a set of piped (|) commands
@@ -65,7 +65,7 @@ ls | grep ".fastq" |cut -d "_" -f 1 | sort | uniq > list
 
 ### Copy over the list of Sequencing Adapters that we want Trimmomatic to look for (along with its default adapters)
         ## CHECK: You may need to edit this path for the file that is in the class_shared directory from your account.
-cp /home/$MyID/class_shared/AdaptersToTrim_All.fa . 
+cp /home/${MyID}/class_shared/AdaptersToTrim_All.fa . 
 
 ### Run a while loop to process through the names in the list and Trim them with the Trimmomatic Code
 while read i
@@ -76,7 +76,7 @@ do
 
         java -jar /mnt/beegfs/home/aubmxa/.conda/envs/BioInfo_Tools/share/trimmomatic-0.39-1/trimmomatic.jar  PE -threads 6 -phred33 \
         "$i"_1.fastq "$i"_2.fastq  \
-        $CD/"$i"_1_paired.fastq $CD/"$i"_1_unpaired.fastq  $CD/"$i"_2_paired.fastq $CD/"$i"_2_unpaired.fastq \
+        ${CD}/"$i"_1_paired.fastq ${CD}/"$i"_1_unpaired.fastq  ${CD}/"$i"_2_paired.fastq ${CD}/"$i"_2_unpaired.fastq \
         ILLUMINACLIP:AdaptersToTrim_All.fa:2:35:10 HEADCROP:10 LEADING:30 TRAILING:30 SLIDINGWINDOW:6:30 MINLEN:36
         
                 ## Trim read for quality when quality drops below Q30 and remove sequences shorter than 36 bp
@@ -89,15 +89,16 @@ do
 	## FastQC: run on each of the data files that have 'All' to check the quality of the data
 	## The output from this analysis is a folder of results and a zipped file of results
 
-fastqc $CD/"$i"_1_paired.fastq --outdir=$WD/$CS
-fastqc $CD/"$i"_2_paired.fastq --outdir=$WD/$CS
+fastqc ${CD}/"$i"_1_paired.fastq --outdir=${WD}/${PCQ}
+fastqc ${CD}/"$i"_2_paired.fastq --outdir=${WD}/${PCQ}
 
 done<list			# This is the end of the loop
 
 #########################  Now compress your results files from the Quality Assessment by FastQC 
 ## move to the directory with the cleaned data
-cd $WD/$CS
+cd ${WD}/${PCQ}
 
 #######  Tarball the directory containing the FASTQC results so we can easily bring it back to our computer to evaluate.
-## when finished use scp or rsync to bring the .gz file to your computer and open the .html file to evaluate
-tar cvzf $CS.tar.gz $WD/$CS/*
+tar cvzf ${CS}.tar.gz ${WD}/${PCQ}/*
+
+## when finished use scp or rsync to bring the .gz file to your computer and open the .html file to evaluate the quality of the data.
