@@ -41,10 +41,10 @@ md5sum {SHAREDIR}*.fastq > md5sum_Original.txt
 md5sum ./*.fastq >> md5sum_New.txt
 
 ######  Make a directory for this project and results in your home folder
-mkdir home/aubtss/md5sum_files
+mkdir home/aubtss/Practice_Code_2024/md5sum_files
 
 ##### Move the md5sums text files back to your home folder
-mv md5sum.txt /home/aubtss/md5sum_files
+mv md5sum.txt /home/aubtss/Practice_Code_2024/md5sum_files
 
-mv md5sum_Original.txt /home/aubtss/md5sum_files
+mv md5sum_Original.txt /home/aubtss/Practice_Code_2024/md5sum_files
 
