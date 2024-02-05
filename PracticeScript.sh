@@ -27,7 +27,7 @@ mkdir -p ${DATADIR}
 ### Change (move) to the scratch directory you just made
 ### Example: cd /scratch/YOUR_ID/test
 cd ${DATADIR}
-echo "Line 30 completed" > Notes.txt
+echo "Yea, directory made! Line 30 completed" > Notes.txt
 
 ####### Move the practice datafiles (all files with .fastq) from our shared directory to where you are, here (.)
 cp ${SHAREDIR}/*.fastq  .
