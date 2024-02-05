@@ -6,7 +6,7 @@
 ###		Date: January, 2024
 ###		BIOL6850: Functional Genomics, Auburn University
 ###		Purpose: Learn to make a directory (folder) in scratch, move files, assign variables,
-###			and check error files.
+###			and check error files. There are 4 errors in this file. Can you find them and make it run correctly?
 ##############################################################################################
 
 #source /opt/asn/etc/asn-bash-profiles-special/modules.sh
@@ -33,7 +33,7 @@ echo "Line 30 completed" > Notes.txt
 cp ${SHAREDIR}/*.fastq  .
 
 
-###########  Check for errors in transfer
+###########  Check for errors in transfer. Calculate the md5sum for the file.
 ### Calculate the md5sum values of the file in the original folder and read (put) into a text file.
 md5sum {SHAREDIR}*.fastq > md5sum_Original.txt
 
