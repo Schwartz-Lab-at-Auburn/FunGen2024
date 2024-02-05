@@ -6,12 +6,12 @@
 ##              First need to use gffread to convert annotation file from .gff3 to .gft formate
 ##              Use Stringtie to count the reads mapped to genes and transcripts, defined in this case by the genome annotation file
 ##              use the python script to take the Stringtie results to make two counts matricies, one at the gene level and one at the transcript level
-## HiSat2  Indexing  InPut: Reference genome file (.fasta), and annotation file (.gff3) (Optional)
+## HiSat2  Indexing   InPut: Reference genome file (.fasta), and annotation file (.gff3) (Optional)
 ##                    Output: Indexed genome 
 ## HiSat2 Mapping     Input: Cleaned read files, paired (.fasq); Indexed genome
 ##                    Output: Alignment .sam files  
-## Samtools  Convert .sam to .bam and sort         Input: Alignment files  .sam
-##                                                  Output: Sorted .bam files
+## Samtools  Convert .sam to .bam and sort         Input: Alignment files,  .sam
+##                                                  Output: Sorted, .bam files
 ## Stringtie  Counting reads  Input: sorted .bam file
 ##                            Output:  Directories of counts files for Ballgown (R program for DGE)
 ##              prepDE.py    Python script to create a counts matrics from the Stringtie output.  Inputs: Directory from Stringtie
@@ -28,6 +28,7 @@
 ##    run on dmc
 ###############################################
 
+#### Load all the programs you are going to use in this script.
 source /opt/asn/etc/asn-bash-profiles-special/modules.sh
 module load hisat2
 module load stringtie/2.2.1
@@ -52,13 +53,12 @@ set -x
   ## Replace the [#] with paths to define these variable
 MyID=[1]          ## Example: MyID=aubtss
 
-WD=[2]                                                ## Example:/scratch/$MyID/PracticeRNAseq  
-CLEAND=[3]                                            ## Example:/scratch/$MyID/PracticeRNAseq/CleanData20   #   *** This is where the cleaned paired files are located
-REFD=[4]                                              ## Example:/scratch/$MyID/PracticeRNAseq/DaphniaRefGenome_6                      # this directory contains the indexed reference genome for the garter snake
-MAPD=[5]                                              ## Example:/scratch/$MyID/PracticeRNAseq/Map_HiSat2_6
-COUNTSD=[6]                                           ## Example:/scratch/$MyID/PracticeRNAseq/Counts_StringTie_6
-
-RESULTSD=[7]                                          ## Example:/home/aubtss/PracticeRNAseq/Counts_H_S_6
+WD=[2]            ## Example:/scratch/$MyID/PracticeRNAseq  
+CLEAND=[3]        ## Example:/scratch/$MyID/PracticeRNAseq/CleanData20   #   *** This is where the cleaned paired files are located
+REFD=[4]          ## Example:/scratch/$MyID/PracticeRNAseq/DaphniaRefGenome    # this directory contains the indexed reference genome for the garter snake
+MAPD=[5]          ## Example:/scratch/$MyID/PracticeRNAseq/Map_HiSat2      #
+COUNTSD=[6]       ## Example:/scratch/$MyID/PracticeRNAseq/Counts_StringTie
+RESULTSD=[7]      ## Example:/home/aubtss/PracticeRNAseq/Counts_H_S
 
 REF=DaphniaPulex_RefGenome_PA42_v3.0                  ## This is what the "easy name" will be for the genome reference
 
