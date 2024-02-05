@@ -37,13 +37,13 @@ MyID=[1]          ## Example: MyID=aubtss
   ## Make variable that represents YOUR working directory(WD) in scratch, your Raw data directory (DD) and the pre or postcleaned status (CS).
 DD=[2]   			## Example: DD=/scratch/$MyID/PracticeRNAseq/RawData
 WD=[3]				## Example: WD=/scratch/$MyID/PracticeRNAseq
-CS=PreCleanQuality
+RDQ=RawDataQuality
  
 ##  make the directories in SCRATCH for holding the raw data 
 ## -p tells it to make any upper level directories that are not there. Notice how this will also make the WD.
-mkdir -p $DD
+mkdir -p ${DD}
 ## move to the Data Directory
-cd $DD
+cd ${DD}
 
 ##########  Download data files from NCBI: SRA using the Run IDs
   ### from SRA use the SRA tool kit - see NCBI website https://www.ncbi.nlm.nih.gov/sra/docs/sradownload/
@@ -84,10 +84,10 @@ fastq-dump -F --split-files SRR6819023
 ############## FASTQC to assess quality of the sequence data
 ## FastQC: run on each of the data files that have 'All' to check the quality of the data
 ## The output from this analysis is a folder of results and a zipped file of results
-mkdir $WD/$CS
-fastqc *.fastq --outdir=$WD/$CS
+mkdir ${WD}/${RDQ}
+fastqc *.fastq --outdir=${WD}/${RDQ}
 
 #######  Tarball the directory containing the FASTQC results so we can easily bring it back to our computer to evaluate.
 ## when finished use scp or rsync to bring the tarballed .gz results file to your computer and open the .html file to evaluate the quality of your raw data.
-cd $WD/$CS
-tar cvzf $CS.tar.gz $WD/$CS/*
+cd ${WD}/${RDQ}
+tar cvzf ${RDQ}.tar.gz  ${WD}/${RDQ}/*
