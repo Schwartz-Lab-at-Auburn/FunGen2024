@@ -30,7 +30,8 @@
 ## More Information: http://www.usadellab.org/cms/?page=trimmomatic
 
 # Modules
-source /opt/asn/etc/asn-bash-profiles-special/modules.sh
+	#  load the module
+source /apps/profiles/modules_asax.sh.dyn
 module load trimmomatic/0.39
 module load fastqc/0.10.1
 
@@ -74,7 +75,8 @@ do
         ### Run Trimmomatic in paired end (PE) mode with 6 threads using phred 33 quality score format. 
         ## STOP & DISCUSS: Check out the trimmomatic documentation to understand the parameters in line 77
 
-        java -jar /mnt/beegfs/home/aubmxa/.conda/envs/BioInfo_Tools/share/trimmomatic-0.39-1/trimmomatic.jar  PE -threads 6 -phred33 \
+        java -jar /apps/x86-64/apps/spack_0.19.1/spack/opt/spack/linux-rocky8-zen3/gcc-11.3.0/trimmomatic-0.39-iu723m2xenra563gozbob6ansjnxmnfp/bin/trimmomatic-0.39-1/trimmomatic.jar  \
+	PE -threads 6 -phred33 \
         "$i"_1.fastq "$i"_2.fastq  \
         ${CD}/"$i"_1_paired.fastq ${CD}/"$i"_1_unpaired.fastq  ${CD}/"$i"_2_paired.fastq ${CD}/"$i"_2_unpaired.fastq \
         ILLUMINACLIP:AdaptersToTrim_All.fa:2:35:10 HEADCROP:10 LEADING:30 TRAILING:30 SLIDINGWINDOW:6:30 MINLEN:36
@@ -99,6 +101,6 @@ done<list			# This is the end of the loop
 cd ${WD}/${PCQ}
 
 #######  Tarball the directory containing the FASTQC results so we can easily bring it back to our computer to evaluate.
-tar cvzf ${CS}.tar.gz ${WD}/${PCQ}/*
+tar cvzf ${PCQ}.tar.gz ${WD}/${PCQ}/*
 
 ## when finished use scp or rsync to bring the .gz file to your computer and open the .html file to evaluate the quality of the data.
