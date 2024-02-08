@@ -25,7 +25,7 @@
 
 
 ########## Load Modules
-source /opt/asn/etc/asn-bash-profiles-special/modules.sh
+source /apps/profiles/modules_asax.sh.dyn
 module load sra
 module load fastqc/0.10.1
 
@@ -70,7 +70,7 @@ fastq-dump -F --split-files SRR6819022
 fastq-dump -F --split-files SRR6819023
 
 ##### Extra ####
-## If you are downloaded data from a sequencing company instead of NCBI, using wget for example, then calculate the md5sum values of all the files in the folder (./*), and read into a text file.
+## If you are downloading data from a sequencing company instead of NCBI, using wget for example, then calculate the md5sum values of all the files in the folder (./*), and read into a text file.
 ## then you can compare the values in this file with the ones provided by the company.
 #md5sum ./* > md5sum.txt
 
@@ -83,11 +83,11 @@ fastq-dump -F --split-files SRR6819023
 
 ############## FASTQC to assess quality of the sequence data
 ## FastQC: run on each of the data files that have 'All' to check the quality of the data
-## The output from this analysis is a folder of results and a zipped file of results
+## The output from this analysis is a folder of results and a zipped file of results and a .html file for each sample
 mkdir ${WD}/${RDQ}
 fastqc *.fastq --outdir=${WD}/${RDQ}
 
 #######  Tarball the directory containing the FASTQC results so we can easily bring it back to our computer to evaluate.
-## when finished use scp or rsync to bring the tarballed .gz results file to your computer and open the .html file to evaluate the quality of your raw data.
 cd ${WD}/${RDQ}
 tar cvzf ${RDQ}.tar.gz  ${WD}/${RDQ}/*
+## when finished use scp or rsync to bring the tarballed .gz results file to your computer and open the .html file to evaluate the quality of your raw data.
