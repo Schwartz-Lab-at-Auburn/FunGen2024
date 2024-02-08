@@ -25,14 +25,13 @@
 ##    core: 6
 ##    time limit (HH:MM:SS): 04:00:00 
 ##    Memory: 12gb
-##    run on dmc
+##    
 ###############################################
 
 #### Load all the programs you are going to use in this script.
-source /opt/asn/etc/asn-bash-profiles-special/modules.sh
-module load hisat2
+source /apps/profiles/modules_asax.sh.dyn
+module load hisat2/2.2.0
 module load stringtie/2.2.1
-module load gffcompare
 module load python/2.7.1
 module load gcc/9.3.0
 module load samtools
@@ -54,7 +53,7 @@ set -x
 MyID=[1]          ## Example: MyID=aubtss
 
 WD=[2]            ## Example:/scratch/$MyID/PracticeRNAseq  
-CD=[3]            ## Example:/scratch/$MyID/PracticeRNAseq/CleanData20   #   *** This is where the cleaned paired files are located from the last script
+CD=[3]            ## Example:/scratch/$MyID/PracticeRNAseq/CleanData   #   *** This is where the cleaned paired files are located from the last script
 REFD=[4]          ## Example:/scratch/$MyID/PracticeRNAseq/DaphniaRefGenome    # this directory contains the indexed reference genome for the garter snake
 MAPD=[5]          ## Example:/scratch/$MyID/PracticeRNAseq/Map_HiSat2      #
 COUNTSD=[6]       ## Example:/scratch/$MyID/PracticeRNAseq/Counts_StringTie
@@ -70,10 +69,11 @@ mkdir -p $RESULTSD
 
 ##################  Prepare the Reference Index for mapping with HiSat2   #############################
 cd $REFD
+### Copy the reference genome (.fasta) and the annotation file (.gff3) to this REFD directory
 cp /home/${MyID}/class_shared/${REF}.fasta .
 cp /home/${MyID}/class_shared/${REF}.gff3 .
 
-###  Identify exons and splice sites
+###  Identify exons and splice sites on the reference genome
 gffread ${REF}.gff3 -T -o ${REF}.gtf               ## gffread converts the annotation file from .gff3 to .gft formate for HiSat2 to use.
 extract_splice_sites.py ${REF}.gtf > ${REF}.ss
 extract_exons.py ${REF}.gtf > ${REF}.exon
@@ -96,6 +96,7 @@ cd ${MAPD}
 ## move the list of unique ids from the original files to map
 mv ${CD}/list  . 
 
+## process the samples in the list, one by one using a while loop
 while read i;
 do
   ## HiSat2 is the mapping program
@@ -108,7 +109,7 @@ do
     ### view: convert the SAM file into a BAM file  -bS: BAM is the binary format corresponding to the SAM text format.
     ### sort: convert the BAM file to a sorted BAM file.
     ### Example Input: SRR629651.sam; Output: SRR629651_sorted.bam
-  samtools view -@ 6 -bS "$i".sam > "$i".bam  #
+  samtools view -@ 6 -bS "$i".sam > "$i".bam  
 
     ###  This is sorting the bam, using 6 threads, and producing a .bam file that includes the word 'sorted' in the name
   samtools sort -@ 6  "$i".bam    "$i"_sorted
@@ -136,5 +137,6 @@ cd ${CD}
  ## run the python script prepDE.phy to prepare you data for downstream analysis.
 python /home/${MyID}/class_shared/prepDE.py -i ${CD}
 
-### copy the final results files (the count matricies that are .cvs to your home directory)
+### copy the final results files (the count matricies that are .cvs) to your home directory. 
 cp *.csv ${RESULTSD}
+## move these results files to your personal computer for downstream statistical analyses in R studio.
