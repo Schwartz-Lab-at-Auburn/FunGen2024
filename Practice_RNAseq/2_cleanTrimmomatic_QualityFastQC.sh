@@ -21,7 +21,7 @@
                 ## core: 6
                 ## time limit (HH:MM:SS): 02:00:00  (may need to increase, if so run on medium queue)
                 ## Memory: 12gb
-                ## run on dmc
+                ## 
 ###############################################
 
 ## Purpose: The purpose of this script is to trim sequencing adapters and low quality regions from the read data.
@@ -75,7 +75,7 @@ do
         ### Run Trimmomatic in paired end (PE) mode with 6 threads using phred 33 quality score format. 
         ## STOP & DISCUSS: Check out the trimmomatic documentation to understand the parameters in line 77
 
-        java -jar /apps/x86-64/apps/spack_0.19.1/spack/opt/spack/linux-rocky8-zen3/gcc-11.3.0/trimmomatic-0.39-iu723m2xenra563gozbob6ansjnxmnfp/bin/trimmomatic-0.39-1/trimmomatic.jar  \
+        java -jar /apps/x86-64/apps/spack_0.19.1/spack/opt/spack/linux-rocky8-zen3/gcc-11.3.0/trimmomatic-0.39-iu723m2xenra563gozbob6ansjnxmnfp/bin/trimmomatic-0.39.jar   \
 	PE -threads 6 -phred33 \
         "$i"_1.fastq "$i"_2.fastq  \
         ${CD}/"$i"_1_paired.fastq ${CD}/"$i"_1_unpaired.fastq  ${CD}/"$i"_2_paired.fastq ${CD}/"$i"_2_unpaired.fastq \
