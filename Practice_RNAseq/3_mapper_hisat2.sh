@@ -5,8 +5,7 @@
 ##    Use HiSat2 to index your reference genome and then map your cleaned (paired) reads to the indexed reference
 ##              First need to use gffread to convert annotation file from .gff3 to .gft formate
 ##              Use Stringtie to count the reads mapped to genes and transcripts, defined in this case by the genome annotation file
-##              use the python script to take the Stringtie results to make two counts matricies, one at the gene level and one at the transcript lev
-el
+##              use the python script to take the Stringtie results to make two counts matricies, one at the gene level and one at the transcript level
 ## HiSat2  Indexing   InPut: Reference genome file (.fasta), and annotation file (.gff3) (Optional)
 ##                    Output: Indexed genome 
 ## HiSat2 Mapping     Input: Cleaned read files, paired (.fasq); Indexed genome
@@ -54,10 +53,8 @@ set -x
 MyID=aubtss          ## Example: MyID=aubtss
 
 WD=/scratch/$MyID/PracticeRNAseq            ## Example:/scratch/$MyID/PracticeRNAseq  
-CD=/scratch/$MyID/PracticeRNAseq/CleanData            ## Example:/scratch/$MyID/PracticeRNAseq/CleanData   #   *** This is where the cleaned paired f
-iles are located from the last script
-REFD=/scratch/$MyID/PracticeRNAseq/DaphniaRefGenome          ## Example:/scratch/$MyID/PracticeRNAseq/DaphniaRefGenome    # this directory contains t
-he indexed reference genome for the garter snake
+CD=/scratch/$MyID/PracticeRNAseq/CleanData            ## Example:/scratch/$MyID/PracticeRNAseq/CleanData   #   *** This is where the cleaned paired files are located from the last script
+REFD=/scratch/$MyID/PracticeRNAseq/DaphniaRefGenome          ## Example:/scratch/$MyID/PracticeRNAseq/DaphniaRefGenome    # this directory contains the indexed reference genome for the garter snake
 MAPD=/scratch/$MyID/PracticeRNAseq/Map_HiSat2           ## Example:/scratch/$MyID/PracticeRNAseq/Map_HiSat2      #
 COUNTSD=/scratch/$MyID/PracticeRNAseq/Counts_StringTie       ## Example:/scratch/$MyID/PracticeRNAseq/Counts_StringTie
 RESULTSD=/home/$MyID/PracticeRNAseq/Counts_H_S_2024      ## Example:/home/aubtss/PracticeRNAseq/Counts_H_S
