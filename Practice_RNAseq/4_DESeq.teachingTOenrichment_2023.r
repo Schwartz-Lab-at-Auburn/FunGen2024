@@ -219,7 +219,8 @@ dim(DGErank_withName)
 #head(DGErankIDs)
 #summary(DGErankIDs)  
 
-write.csv(as.data.frame(DGErankIDs), file="DGErankIDs.csv", row.names=FALSE)  
+#write.csv(as.data.frame(DGErankIDs), file="DGErankIDs.csv", row.names=FALSE)  
+write.table(as.data.frame(DGErank_withName), file="DGErankName.txt", quote=FALSE, row.names=FALSE, sep = "\t")  
 
 ####  We also need the normalized expression DATA
 nt <- normTransform(dds) # defaults to log2(x+1)
@@ -233,5 +234,6 @@ gene <-gsub("^[^-]+-", "", rownames(NormTransExp))
 NormTransExpIDs  <-cbind(gene,NormTransExp)
 head(NormTransExpIDs)
 
-write.csv(as.data.frame(NormTransExpIDs), file="NormTransExpressionData.csv", row.names=FALSE)  
+#write.csv(as.data.frame(NormTransExpIDs), file="NormTransExpressionData.csv", row.names=FALSE)  
+write.table(as.data.frame(NormTransExpIDs), file="NormTransExpIDs.txt", quote=FALSE, row.names=FALSE, sep = "\t")  
 
